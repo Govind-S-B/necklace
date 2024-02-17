@@ -53,6 +53,7 @@ void setupSD()
 
 void setup()
 {
+    Serial.begin(9600);
     setupSD();
     const char *payload = "hey this is bulletlaunch";
     uint16_t number = (uint16_t)strtoul(payload, NULL, 10);
