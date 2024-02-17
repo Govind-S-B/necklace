@@ -1,7 +1,7 @@
 import asyncio
 import websockets
 
-SERVER_ADDR = "192.168.28.180"
+SERVER_ADDR = "192.168.29.147"
 
 async def client_handler():
     async with websockets.connect(f"ws://{SERVER_ADDR}:8765") as websocket:

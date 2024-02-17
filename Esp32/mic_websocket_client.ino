@@ -5,7 +5,7 @@
 const char *ssid = "Aetos";
 const char *password = "12345679";
 const char *webSocketServerAddress = "192.168.28.180"; // Replace with your WebSocket server address
-const uint16_t port = 8765;                            // Replace with your WebSocket server port
+const uint16_t port = 8888;                            // Replace with your WebSocket server port
 
 WebSocketsClient webSocket;
 
@@ -47,10 +47,10 @@ void i2s_setpin()
         .ws_io_num = I2S_WS,
         .data_out_num = -1,
         .data_in_num = I2S_SD
-
+    };
             i2s_set_pin(I2S_PORT, &pin_config);
 }
-}
+
 
 void micTask(void *parameter, WebSocketsClient client)
 {
