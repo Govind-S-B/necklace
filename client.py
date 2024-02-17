@@ -1,7 +1,7 @@
 import asyncio
 import websockets
 
-SERVER_ADDR = "192.168.29.119"
+SERVER_ADDR = "192.168.28.217"
 
 async def receive_messages(websocket):
     while True:
@@ -20,4 +20,9 @@ async def client_handler():
             send_messages(websocket)
         )
 
-asyncio.get_event_loop().run_until_complete(client_handler())
+# Explicitly create and set an event loop
+loop = asyncio.new_event_loop()
+asyncio.set_event_loop(loop)
+
+# Run the client using the explicitly created event loop
+loop.run_until_complete(client_handler())
