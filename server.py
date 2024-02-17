@@ -9,8 +9,7 @@ async def server_handler(websocket, path):
     try:
         async for message in websocket:
             for client in connected_clients:
-                if client != websocket:
-                    await client.send(message)
+                await client.send(message)
     finally:
         connected_clients.remove(websocket)
 
