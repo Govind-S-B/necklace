@@ -1,9 +1,9 @@
 #include <WiFi.h>
 #include <WebSocketsClient.h>
 
-const char *ssid = "YOUR_SSID";
-const char *password = "YOUR_PASSWORD";
-const char *webSocketServerAddress = "wss://echo.websocket.org"; // Replace with your WebSocket server address
+const char *ssid = "Aetos";
+const char *password = "12345679";
+const char *webSocketServerAddress = "192.168.28.180"; // Replace with your WebSocket server address
 const uint16_t port = 8765;                                      // Replace with your WebSocket server port
 
 WebSocketsClient webSocket;
@@ -48,7 +48,6 @@ void webSocketEvent(WStype_t type, uint8_t *payload, size_t length)
         break;
     case WStype_ERROR:
         Serial.print("WebSocket error: ");
-        Serial.println(webSocket.lastError());
         break;
     }
 }
