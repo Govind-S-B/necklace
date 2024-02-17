@@ -8,8 +8,9 @@ async def server_handler(websocket, path):
     print("client connected")
     try:
         async for message in websocket:
-            for client in connected_clients:
-                await client.send(message)
+            print(f"Received: {message}")
+            response = f"Server: You sent '{message}'"
+            await websocket.send(response)
     finally:
         connected_clients.remove(websocket)
 
