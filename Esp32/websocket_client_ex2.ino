@@ -4,8 +4,8 @@
 const char *ssid = "Aetos";
 const char *password = "12345679";
 const char *webSocketServerAddress =
-    "192.168.28.180";       // Replace with your WebSocket server address
-const uint16_t port = 8765; // Replace with your WebSocket server port
+    "139.84.139.39";       // Replace with your WebSocket server address
+const uint16_t port = 8888; // Replace with your WebSocket server port
 
 WebSocketsClient webSocket;
 

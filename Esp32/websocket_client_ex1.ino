@@ -78,8 +78,8 @@ void micTask(void *parameter) {
 const char *ssid = "Aetos";
 const char *password = "12345679";
 
-const char *websocket_server_host = "192.168.28.180";
-const uint16_t websocket_server_port = 8765; // <WEBSOCKET_SERVER_PORT>
+const char *websocket_server_host = "139.84.139.39";
+const uint16_t websocket_server_port = 8888; // <WEBSOCKET_SERVER_PORT>
 
 using namespace websockets;
 WebsocketsClient client;
