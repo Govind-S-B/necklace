@@ -19,8 +19,8 @@ https://github.com/gilmaimon/ArduinoWebsockets
 */
 
 // #include <driver/i2s.h>
-#include <WiFi.h>
 #include <ArduinoWebsockets.h>
+#include <WiFi.h>
 
 // #define I2S_SD 12
 // #define I2S_WS 15
@@ -31,11 +31,11 @@ https://github.com/gilmaimon/ArduinoWebsockets
 // #define bufferLen 1024
 // int16_t sBuffer[bufferLen];
 
-const char* ssid = "Aetos";
-const char* password = "12345679";
+const char *ssid = "Aetos";
+const char *password = "12345679";
 
-const char* websocket_server_host = "192.168.28.180";
-const uint16_t websocket_server_port = 8765;// <WEBSOCKET_SERVER_PORT>
+const char *websocket_server_host = "192.168.28.180";
+const uint16_t websocket_server_port = 8765; // <WEBSOCKET_SERVER_PORT>
 
 using namespace websockets;
 WebsocketsClient client;
@@ -92,8 +92,7 @@ void setup() {
   // xTaskCreatePinnedToCore(micTask, "micTask", 10000, NULL, 1, NULL, 1);
 }
 
-void loop() {
-}
+void loop() {}
 
 void connectWiFi() {
   WiFi.begin(ssid, password);
@@ -115,7 +114,6 @@ void connectWSServer() {
   Serial.println("Websocket Connected!");
 }
 
-
 // void micTask(void* parameter) {
 
 //   i2s_install();
@@ -124,8 +122,8 @@ void connectWSServer() {
 
 //   size_t bytesIn = 0;
 //   while (1) {
-//     esp_err_t result = i2s_read(I2S_PORT, &sBuffer, bufferLen, &bytesIn, portMAX_DELAY);
-//     if (result == ESP_OK && isWebSocketConnected) {
+//     esp_err_t result = i2s_read(I2S_PORT, &sBuffer, bufferLen, &bytesIn,
+//     portMAX_DELAY); if (result == ESP_OK && isWebSocketConnected) {
 //       client.sendBinary((const char*)sBuffer, bytesIn);
 //     }
 //   }
