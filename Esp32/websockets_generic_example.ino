@@ -121,7 +121,11 @@ void webSocketEvent(const WStype_t &type, uint8_t *payload, const size_t &length
 
         break;
 
-    case WStype_ERROR:
+    case WStype_ERROR:{
+        Serial.println("[WSc] ERROR: " , payload);
+    }
+
+
     case WStype_FRAGMENT_TEXT_START:
     case WStype_FRAGMENT_BIN_START:
     case WStype_FRAGMENT:
