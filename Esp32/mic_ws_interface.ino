@@ -15,7 +15,7 @@ const char *ssid = "Aetos";
 const char *password = "12345679";
 
 const char *websocket_server_host = "139.84.139.39";
-const uint16_t websocket_server_port = 8888;
+const uint16_t websocket_server_port = 8888; // <WEBSOCKET_SERVER_PORT>
 
 using namespace websockets;
 WebsocketsClient client;
@@ -39,8 +39,8 @@ void i2s_install() {
   // Set up I2S Processor configuration
   const i2s_config_t i2s_config = {
       .mode = i2s_mode_t(I2S_MODE_MASTER | I2S_MODE_RX),
-      // .sample_rate = 44100,
-      .sample_rate = 16000,
+      .sample_rate = 44100,
+      //.sample_rate = 16000,
       .bits_per_sample = i2s_bits_per_sample_t(16),
       .channel_format = I2S_CHANNEL_FMT_ONLY_LEFT,
       .communication_format = i2s_comm_format_t(I2S_COMM_FORMAT_STAND_I2S),
@@ -74,6 +74,7 @@ void loop() {}
 
 void connectWiFi() {
   WiFi.begin(ssid, password);
+
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
@@ -92,6 +93,7 @@ void connectWSServer() {
 }
 
 void micTask(void *parameter) {
+
   i2s_install();
   i2s_setpin();
   i2s_start(I2S_PORT);
@@ -101,16 +103,7 @@ void micTask(void *parameter) {
     esp_err_t result =
         i2s_read(I2S_PORT, &sBuffer, bufferLen, &bytesIn, portMAX_DELAY);
     if (result == ESP_OK && isWebSocketConnected) {
-      // client.sendBinary((const char*)sBuffer, bytesIn);
-      int16_t samplesread = bytesIn / 8;
-      if (samplesread > 0) {
-        float mean = 0;
-        for (int16_t i = 0; i < samplesread; ++i) {
-          mean += (sBuffer[i]);
-        }
-        mean /= samplesread;
-        Serial.println(mean);
-      }
+      client.sendBinary((const char *)sBuffer, bytesIn);
     }
   }
 }

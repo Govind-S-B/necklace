@@ -170,7 +170,7 @@ void testFileIO(fs::FS &fs, const char *path) {
 }
 
 void setup() {
-  Serial.begin(19200);
+  Serial.begin(9600);
   if (!SD_MMC.begin()) {
     Serial.println("Card Mount Failed");
     return;
