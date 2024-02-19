@@ -11,11 +11,11 @@
 #define bufferLen 1024
 int16_t sBuffer[bufferLen];
 
-const char *ssid = "Aetos";
-const char *password = "12345679";
+const char *ssid = "Aetos";        //<WIFI_SSID>
+const char *password = "12345679"; //<WIFI_PASSWORD>
 
-const char *websocket_server_host = "139.84.139.39";
-const uint16_t websocket_server_port = 8888;
+const char *websocket_server_host = "139.84.139.39"; //<WEBSOCKET_SERVER_HOST>
+const uint16_t websocket_server_port = 8888;         // <WEBSOCKET_SERVER_PORT>
 
 using namespace websockets;
 WebsocketsClient client;
