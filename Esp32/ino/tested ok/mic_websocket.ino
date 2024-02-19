@@ -2,15 +2,18 @@
 #include <WiFi.h>
 #include <driver/i2s.h>
 
+// I2S pin definitions
 #define I2S_SD 13
 #define I2S_WS 15
 #define I2S_SCK 14
 #define I2S_PORT I2S_NUM_0
 
-#define bufferCnt 10
-#define bufferLen 1024
-int16_t sBuffer[bufferLen];
+// Buffer settings
+#define BUFFERCNT 10
+#define BUFFERLEN 1024
+int16_t sBuffer[BUFFERLEN];
 
+// WiFi and WebSocket server settings
 const char *ssid = "Aetos";        //<WIFI_SSID>
 const char *password = "12345679"; //<WIFI_PASSWORD>
 
@@ -21,6 +24,7 @@ using namespace websockets;
 WebsocketsClient client;
 bool isWebSocketConnected;
 
+// WebSocket event callback function
 void onEventsCallback(WebsocketsEvent event, String data) {
   if (event == WebsocketsEvent::ConnectionOpened) {
     Serial.println("Connnection Opened");
@@ -35,25 +39,24 @@ void onEventsCallback(WebsocketsEvent event, String data) {
   }
 }
 
+// Initialize I2S configuration
 void i2s_install() {
-  // Set up I2S Processor configuration
   const i2s_config_t i2s_config = {
       .mode = i2s_mode_t(I2S_MODE_MASTER | I2S_MODE_RX),
-      // .sample_rate = 44100,
       .sample_rate = 16000,
       .bits_per_sample = i2s_bits_per_sample_t(16),
       .channel_format = I2S_CHANNEL_FMT_ONLY_LEFT,
       .communication_format = i2s_comm_format_t(I2S_COMM_FORMAT_STAND_I2S),
       .intr_alloc_flags = 0,
-      .dma_buf_count = bufferCnt,
-      .dma_buf_len = bufferLen,
+      .dma_buf_count = BUFFERCNT,
+      .dma_buf_len = BUFFERLEN,
       .use_apll = false};
 
   i2s_driver_install(I2S_PORT, &i2s_config, 0, NULL);
 }
 
+// Configure I2S pins
 void i2s_setpin() {
-  // Set I2S pin configuration
   const i2s_pin_config_t pin_config = {.bck_io_num = I2S_SCK,
                                        .ws_io_num = I2S_WS,
                                        .data_out_num = -1,
@@ -99,7 +102,7 @@ void micTask(void *parameter) {
   size_t bytesIn = 0;
   while (1) {
     esp_err_t result =
-        i2s_read(I2S_PORT, &sBuffer, bufferLen, &bytesIn, portMAX_DELAY);
+        i2s_read(I2S_PORT, &sBuffer, BUFFERLEN, &bytesIn, portMAX_DELAY);
     if (result == ESP_OK && isWebSocketConnected) {
       client.sendBinary((const char *)sBuffer, bytesIn);
     }
