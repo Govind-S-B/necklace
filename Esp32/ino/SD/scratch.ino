@@ -51,19 +51,49 @@ void printBuffer(const char *buffer, size_t length) {
   Serial.println();
 }
 
+//--------------FIle dependencies----------------
+
+#include "FS.h"
+#include "SD_MMC.h"
+
+File file;
+
+void initSDCard() {
+  if (!SD_MMC.begin()) {
+    Serial.println("Failed to initialize SD card");
+    return;
+  }
+  uint8_t cardType = SD_MMC.cardType();
+  if (cardType == CARD_NONE) {
+    Serial.println("No SD card attached");
+    return;
+  }
+  Serial.println("SD card initialized");
+}
+
 void entryPoint(void *parameters) {
   i2s_install();
   i2s_setpin();
   i2s_start(I2S_PORT);
 
   size_t bytesIn = 0;
-  int counter = 0;
+  int counter = 0, fileCounter = 0;
+
+  initSDCard();
+
+  String fileName = "/audio_" + String(fileCounter++) + ".wav";
+  file = SD_MMC.open(fileName, FILE_WRITE);
+  Serial.println(fileName);
+
   while (1) {
-    esp_err_t result =
-        i2s_read(I2S_PORT, &sBuffer, AUDIO_BUFFER_LENGTH, &bytesIn, portMAX_DELAY);
+    esp_err_t result = i2s_read(I2S_PORT, &sBuffer, AUDIO_BUFFER_LENGTH,
+                                &bytesIn, portMAX_DELAY);
 
     if (counter >= WAVFILE_SIZE) {
+      file.close();
       counter = 0;
+      fileName = "/audio_" + String(fileCounter++) + ".wav";
+      file = SD_MMC.open(fileName, FILE_WRITE);
     }
     printBuffer((const char *)sBuffer, bytesIn);
     counter++;
