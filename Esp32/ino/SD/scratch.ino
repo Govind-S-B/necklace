@@ -79,21 +79,23 @@ void entryPoint(void *parameters) {
   size_t bytesIn = 0;
   int counter = 0, fileCounter = 0;
 
-  initSDCard();
+  // initSDCard();
 
-  String fileName = "/audio_" + String(fileCounter++) + ".wav";
-  file = SD_MMC.open(fileName, FILE_WRITE);
-  Serial.println(fileName);
+  // String fileName = "/audio_" + String(fileCounter++) + ".wav";
+  // file = SD_MMC.open(fileName, FILE_WRITE);
+  // Serial.println(fileName);
+
+  // fileName = "/audio_" + String(fileCounter++) + ".wav";
+  // file = SD_MMC.open(fileName, FILE_WRITE);
+  // file.close();
 
   while (1) {
     esp_err_t result = i2s_read(I2S_PORT, &sBuffer, AUDIO_BUFFER_LENGTH,
                                 &bytesIn, portMAX_DELAY);
 
     if (counter >= WAVFILE_SIZE) {
-      file.close();
+
       counter = 0;
-      fileName = "/audio_" + String(fileCounter++) + ".wav";
-      file = SD_MMC.open(fileName, FILE_WRITE);
     }
     printBuffer((const char *)sBuffer, bytesIn);
     counter++;
