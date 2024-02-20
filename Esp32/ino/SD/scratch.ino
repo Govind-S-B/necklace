@@ -1,3 +1,12 @@
+//--------------General----------------
+
+#define BUFFER_COUNT 10
+#define AUDIO_BUFFER_LENGTH 1024 // audio buffer length ie. 1kb
+int16_t sBuffer[AUDIO_BUFFER_LENGTH];
+
+#define WAVFILE_SIZE                                                           \
+  (1024 * 1) // no. of 1kb buffers (AUDIO_BUFFER_LENGTH) to be written
+
 //--------------Mic Dependencies-------------------
 
 #include <driver/i2s.h>
@@ -17,8 +26,8 @@ void i2s_install() {
       .channel_format = I2S_CHANNEL_FMT_ONLY_LEFT,
       .communication_format = i2s_comm_format_t(I2S_COMM_FORMAT_STAND_I2S),
       .intr_alloc_flags = 0,
-      .dma_buf_count = bufferCnt,
-      .dma_buf_len = bufferLen,
+      .dma_buf_count = BUFFER_COUNT,
+      .dma_buf_len = AUDIO_BUFFER_LENGTH,
       .use_apll = false};
 
   i2s_driver_install(I2S_PORT, &i2s_config, 0, NULL);
@@ -34,15 +43,6 @@ void i2s_setpin() {
   i2s_set_pin(I2S_PORT, &pin_config);
 }
 
-//--------------General----------------
-
-#define BUFFER_COUNT 10
-#define AUDIO_BUFFER_LENGTH 1024 // audio buffer length ie. 1kb
-int16_t sBuffer[AUDIO_BUFFER_LENGTH];
-
-#define WAVFILE_SIZE                                                           \
-  (1024 * 1) // no. of 1kb buffers (AUDIO_BUFFER_LENGTH) to be written
-
 void printBuffer(const char *buffer, size_t length) {
   for (size_t i = 0; i < length; i++) {
     Serial.print(buffer[i], HEX);
@@ -51,7 +51,7 @@ void printBuffer(const char *buffer, size_t length) {
   Serial.println();
 }
 
-void main(void *parameters) {
+void entryPoint(void *parameters) {
   i2s_install();
   i2s_setpin();
   i2s_start(I2S_PORT);
@@ -60,7 +60,7 @@ void main(void *parameters) {
   int counter = 0;
   while (1) {
     esp_err_t result =
-        i2s_read(I2S_PORT, &sBuffer, bufferLen, &bytesIn, portMAX_DELAY);
+        i2s_read(I2S_PORT, &sBuffer, AUDIO_BUFFER_LENGTH, &bytesIn, portMAX_DELAY);
 
     if (counter >= WAVFILE_SIZE) {
       counter = 0;
@@ -72,7 +72,7 @@ void main(void *parameters) {
 
 void setup() {
   Serial.begin(9600);
-  micTask(NULL);
+  entryPoint(NULL);
 }
 
 void loop() {}
